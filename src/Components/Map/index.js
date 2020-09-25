@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './index.css';
 import GoogleMapReact from 'google-map-react';
 import Marker from '../Marker';
 import MapService from '../../Service/MapService';
@@ -10,7 +9,6 @@ const config = require('../../../package.json').config;
 export default function Map() {
 
   const customStyles = { content: { top: '50%', left: '50%', right: 'auto', bottom: 'auto', marginRight: '-50%', transform: 'translate(-50%, -50%)' } };
-
 
   const [propMarkers, setPropMarkers] = useState([]);
 
@@ -40,7 +38,7 @@ export default function Map() {
       bootstrapURLKeys={{ key: config.googleMapsApiKey, language: "pt-BR" }}
       defaultCenter={{ lat: -20.2209657795223, lng: -44.6923828125 }}
       defaultZoom={5}
-      options={{ streetViewControl: true }}>
+      options={{ streetViewControl: true }} >
         <Modal isOpen={isModalOpen} onRequestClose={closeModal} shouldCloseOnEsc={true} style={customStyles}>
           <PropriedadeInfoWindowModal Propriedade={currentPropMarker}/>
         </Modal>

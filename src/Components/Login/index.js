@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import UserService from '../../Service/UserService';
-import './index.css';
 import { FaArrowRight } from 'react-icons/fa';
+import { Form, Button, ButtonGroup } from 'react-bootstrap';
 
 export default function Login() {
     const [login, setLogin] = useState('');
@@ -15,27 +15,30 @@ export default function Login() {
         });
     }
     return (
-        <div className="d-flex justify-content-center flex-row" style={{ height: '79vh', paddingTop: '150px' }}>
-            <form className="w-25">
+        <div className="flex-center">
+            <Form style={{ width: '350px', height: '10vh', marginTop: '150px'  }}>
                 <h1 className="text-center">EasyHome</h1>
-                <div className="form-group">
-                    <input type="text" className="form-control" id="login" placeholder="Login" value={login} onChange={e=>setLogin(e.target.value)}/>
+                <Form.Group>
+                    <Form.Control
+                        type="text"
+                        placeholder="Login"
+                        value={login}
+                        onChange={e => setLogin(e.target.value)} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)} />
+                </Form.Group>
+                <div className="flex-center">
+                    <ButtonGroup>
+                        <Button variant="primary" size='sm' href="/register" style={{ marginRight: '3px' }}> Cadastre-se </Button>
+                        <Button variant="success" size='sm' onClick={handleLoginData}> Entrar <FaArrowRight /> </Button>
+                    </ButtonGroup>
                 </div>
-                <div className="form-group">
-                    <input type="password" className="form-control" id="senha" placeholder="Senha" value={password} onChange={e=>setPassword(e.target.value)} />
-                </div>
-                <div className="row form-group">
-                    <div className="col-md-6 form-check">
-                        <input type="checkbox" className="form-check-input" id="checkLoginRemember" />
-                        <label className="form-check-label" for="checkLoginRemember">Lembrar Login</label>
-                    </div>
-                    <a className="col-md-6 btn-link">Esqueceu a Senha?</a>
-                </div>
-                <hr className="my-4" />
-                <p className="text-center">
-                    <button type="submit" className="btn btn-primary" onClick={handleLoginData}>Entrar</button>
-                </p>
-            </form>
+            </Form>
         </div>
     );
 }

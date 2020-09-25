@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './index.css';
 import GoogleMapReact from 'google-map-react';
 import { FaSearch } from 'react-icons/fa';
 import Marker from '../../Marker';
@@ -36,26 +35,36 @@ export default function ModalPropriedade(props) {
         };
 
         if (Id) {
-            await propriedadeService.update({
+            const response = await propriedadeService.update({
                 Id,
                 Tipo,
                 Descricao,
                 Endereco,
                 Informacoes,
                 AreaJsonConfig: JSON.stringify(areaJsonConfig)
-            },imageFiles);
+            });
+
+            let returnedId = response.data.Propriedade_ID;
+
+            await propriedadeService.uploadPropriedadeImages(returnedId,imageFiles);
+
         }
         else {
-            await propriedadeService.create({
+            const response = await propriedadeService.create({
                 Tipo,
                 Descricao,
                 Endereco,
                 Informacoes,
                 AreaJsonConfig: JSON.stringify(areaJsonConfig)
-            },imageFiles);
+            });
+
+            let returnedId = response.Propriedade_ID;
+
+            await propriedadeService.uploadPropriedadeImages(returnedId,imageFiles);
         }
 
-        toast.success('Sucesso!')
+        toast.success('Sucesso!');
+
         props.closeFunction();
     }
 

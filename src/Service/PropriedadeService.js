@@ -9,17 +9,10 @@ function getFormData(object) {
 
 
 export default {
-    create: async (obj,imageFiles) => {
-        let formData = getFormData(obj);
-
-        for(let i = 0 ; i < imageFiles.length ; i++) formData.append('file',imageFiles[i]); 
-
-        await api.post('/propriedade', formData, {
-            headers: {
-                "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-                authorization: tokenHelper.getTokenFromCurrentUser()
-            }
-        })
+    create: async (obj) => {
+        const response = await api.post('/propriedade', obj, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() } });
+        
+        return response.data;
     },
     update: async (obj) => {
         await api.put('/propriedade', obj, {
@@ -43,5 +36,20 @@ export default {
                 'Authorization': `${tokenHelper.getTokenFromCurrentUser()}`
             }
         });
+    },
+    uploadPropriedadeImages: async (propId, images) => {
+        const formData = new FormData();
+
+        formData.append('Propriedade_ID', propId);
+
+        for (const img of images) formData.append('image', img);
+
+        await api.post(`/propriedade/imagens`, formData ,{
+            headers: {
+                'Content-type': `multipart/form-data; boundary=${formData._boundary}`,
+                'Authorization': `${tokenHelper.getTokenFromCurrentUser()}`
+            }
+        });
+
     }
 }

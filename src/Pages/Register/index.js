@@ -12,15 +12,11 @@ export default function Register() {
     else {
         return (
             <div>
-                <div style={{ width: '100vw', height: '10vh' }}>
-                    <Header />
-                </div>
-                <div style={{ width: '100vw', height: '80vh' }}>
+                <Header />
+                <div style={{ height: '85vh' }}>
                     <SignUp />
                 </div>
-                <div style={{ width: '100vw', height: '10vh' }}>
-                    <Footer />
-                </div>
+                <Footer />
             </div>
         );
     }

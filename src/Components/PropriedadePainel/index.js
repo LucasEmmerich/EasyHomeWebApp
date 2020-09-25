@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import Modal from 'react-modal';
 import ModalPropriedade from './ModalPropriedade';
 import PropriedadeCard from '../Cards/PropriedadeCard';
@@ -25,7 +26,7 @@ export default function PropriedadePainel() {
         getPropriedadesList();
     }
 
-    const deletePropHandler = async (propId) =>{
+    const deletePropHandler = async (propId) => {
         await PropriedadeService.delete(propId);
         getPropriedadesList();
     }
@@ -40,21 +41,22 @@ export default function PropriedadePainel() {
 
     return (
         <div>
-            <div className="text-right pr-3">
-                <div className="btn-group">
-                    <button type="button" className="m-1 btn btn-success" onClick={newPropOpenModal}>Novo</button>
-                </div>
-            </div>
+            <p style={{textAlign:'right'}}>
+            <ButtonGroup style={{marginRight:'10px'}}>
+                <Button variant='success' onClick={newPropOpenModal}>Novo</Button>
+            </ButtonGroup>
             <Modal isOpen={isModalOpen} onRequestClose={closeModal} shouldCloseOnEsc={true} style={customStyles}>
                 <ModalPropriedade closeFunction={closeModal} Propriedade={propObj} />
             </Modal>
+
+            </p>
             {
                 propriedades.length > 0 ?
                     propriedades.map(p => (<PropriedadeCard Propriedade={p} key={p.Id} onEdit={() => { editPropOpenModal(p) }} onDelete={() => { deletePropHandler(p.Id) }} />))
                     :
                     <div style={{ width: '95vw', height: '70vh' }}>
-                        <h3 className="text-center">Sem Propriedades!</h3>
-                        <h4 className="text-center">Cadastre sua primeira propriedade para visualizá-la!</h4>
+                        <h3 style={{textAlign:'right'}}>Sem Propriedades!</h3>
+                        <h4 style={{textAlign:'right'}}>Cadastre sua primeira propriedade para visualizá-la!</h4>
                     </div>
             }
         </div>

@@ -5,7 +5,6 @@ import shovel from '../../assets/svgIcons/shovel.svg';
 import comercio from '../../assets/svgIcons/comercio.svg';
 import republica from '../../assets/svgIcons/republica.svg';
 import marker from '../../assets/svgIcons/marker.svg';
-import'./index.css';
 
 
 export default class Marker extends Component {

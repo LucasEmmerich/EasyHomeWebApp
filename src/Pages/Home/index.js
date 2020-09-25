@@ -6,19 +6,15 @@ import Map from '../../Components/Map';
 export default function Home() {
     return (
         <div>
-        <div>
             <div>
-                <div style={{ width: '100vw', height: '10vh' }}>
+                <div>
                     <Header />
-                </div>
-                <div style={{ width: '100vw', height: '80vh' }}>
-                    <Map />
-                </div>
-                <div style={{ width: '100vw', height: '10vh' }}>
+                    <div style={{ height: '85vh' }}>
+                        <Map />
+                    </div>
                     <Footer />
                 </div>
             </div>
-        </div>
         </div>
     );
 }
