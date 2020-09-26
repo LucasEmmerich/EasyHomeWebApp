@@ -2,9 +2,10 @@ import React from 'react';
 import Header from '../../Components/Header';
 import SignUp from '../../Components/SignUp';
 import Footer from '../../Components/Footer';
+import { getUser } from '../../Helpers/UserHelper';
 
 export default function Register() {
-    const user = JSON.parse(sessionStorage.getItem('userInfo'));
+    const user = getUser();
 
     if (user) {
         window.location.href = "/";

@@ -2,14 +2,18 @@ import React from 'react';
 import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
 import PropriedadePainel from '../../Components/PropriedadePainel';
+import PainelUsuarioSideBar from '../../Components/PainelUsuarioSideBar';
+import { getUser } from '../../Helpers/UserHelper';
+
 export default function PainelUsuario() {
-    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const user = getUser();
 
     if (user) {
         return (
             <div>
                 <Header />
-                <div style={{ height: '85vh' }}>
+                <div style={{ display: 'flex',height: '85vh' }}>
+                    <PainelUsuarioSideBar />
                     <PropriedadePainel />
                 </div>
                 <Footer />

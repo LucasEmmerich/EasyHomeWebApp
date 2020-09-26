@@ -8,6 +8,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     async function handleLoginData(event) {
+        console.log('dale')
         event.preventDefault();
         await UserService.login({
             Login: login,
