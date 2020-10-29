@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from '../../Components/Header';
+import SignUpComponent from '../../Components/SignUp';
 import Footer from '../../Components/Footer';
-import Login from '../../Components/Login';
-import { getUser } from '../../Helpers/UserHelper';
+import { getSessionUser } from '../../Helpers/UserHelper';
 
-export default function Access() {
+export default function Register() {
+    const user = getSessionUser();
 
-    const user = getUser();
-    console.log('dale')
     if (user) {
         window.location.href = "/";
     }
@@ -15,8 +14,8 @@ export default function Access() {
         return (
             <div>
                 <Header />
-                <div style={{height: '85vh' }}>
-                    <Login />
+                <div style={{ height: '85vh' }}>
+                    <SignUpComponent />
                 </div>
                 <Footer />
             </div>

@@ -2,36 +2,30 @@ import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import Marker from '../Marker';
 import MapService from '../../Service/MapService';
-import Modal from 'react-modal';
-import PropriedadeInfoWindowModal from './PropriedadeInfoWindowModal';
+import PropertyInfoWindowModal from './PropertyInfoWindowModal';
 const config = require('../../../package.json').config;
 
 export default function Map() {
 
-  const customStyles = { content: { top: '50%', left: '50%', right: 'auto', bottom: 'auto', marginRight: '-50%', transform: 'translate(-50%, -50%)' } };
-
   const [propMarkers, setPropMarkers] = useState([]);
 
-  const [isModalOpen,setIsModalOpen] = useState(false);
+  const [modal, setModal] = useState(null);
 
-  const [currentPropMarker, setCurrentPropMarker] = useState(null);
-  const onClickMarker = (obj) => {
-    setCurrentPropMarker(obj);
-    setIsModalOpen(true);
-  };
+  const onClickMarker = (obj) => setModal(<PropertyInfoWindowModal isModalOpen={true} onClose={closeModal} Property={obj} />);
 
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => setModal(null);
+
 
   useEffect(() => {
     MapService.getMapData().then(r => {
-      let propriedadeMarkers = [];
-      for (let p of r.data) {
+      let propertyMarkers = [];
+      for (const p of r.data) {
         let location = JSON.parse(JSON.parse(p.AreaJsonConfig)).cordinates;
-        propriedadeMarkers.push(<Marker lat={location.lat} lng={location.lng} propType={p.Tipo} onClick={() => onClickMarker(p)} />)
+        propertyMarkers.push(<Marker lat={location.lat} lng={location.lng} propType={p.Type} onClick={() => onClickMarker(p)} key={p.Id}/>)
       }
-      setPropMarkers(propriedadeMarkers);
+      setPropMarkers(propertyMarkers);
     });
-  }, []);
+  });
 
   return (
     <GoogleMapReact
@@ -39,10 +33,8 @@ export default function Map() {
       defaultCenter={{ lat: -20.2209657795223, lng: -44.6923828125 }}
       defaultZoom={5}
       options={{ streetViewControl: true }} >
-        <Modal isOpen={isModalOpen} onRequestClose={closeModal} shouldCloseOnEsc={true} style={customStyles}>
-          <PropriedadeInfoWindowModal Propriedade={currentPropMarker}/>
-        </Modal>
       {propMarkers}
+      {modal}
     </GoogleMapReact>
   );
 }

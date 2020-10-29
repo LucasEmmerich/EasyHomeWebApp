@@ -2,69 +2,62 @@ import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { FaSearch } from 'react-icons/fa';
 import Marker from '../../Marker';
-import propriedadeService from '../../../Service/PropriedadeService';
+import PropertyService from '../../../Service/PropertyService';
 import { toast } from 'react-toastify';
 import { Modal, Form, FormControl, Col, Row, Button } from 'react-bootstrap';
 const config = require('../../../../package.json').config;
 
-export default function ModalPropriedade(props) {
-
+export default function PropertyPanel(props) {
     const constructMarker = (obj) => {
         if (obj) {
             const objCoordinates = JSON.parse(JSON.parse(obj));
             let cordinates = objCoordinates.cordinates;
-            return <Marker lat={cordinates.lat} lng={cordinates.lng} propType={Tipo} />
+            return <Marker lat={cordinates.lat} lng={cordinates.lng} propType={Type} />
         }
         else return null;
     }
 
-    const [Id, setId] = useState(props.Propriedade?.Id ?? 0);
-    const [Descricao, setDescricao] = useState(props.Propriedade?.Descricao ?? '');
-    const [Tipo, setTipo] = useState(props.Propriedade?.Tipo ?? '');
-    const [Endereco, setEndereco] = useState(props.Propriedade?.Endereco ?? '');
-    const [Informacoes, setInformacoes] = useState(props.Propriedade?.Informacoes ?? '');
-    const [currentMarker, setCurrentMarker] = useState(constructMarker(props.Propriedade?.AreaJsonConfig));
+    const Id = props.Property?.Id ?? 0;
+    const [Description, setDescription] = useState(props.Property?.Description ?? '');
+    const [Type, setType] = useState(props.Property?.Type ?? '');
+    const [Address, setAddress] = useState(props.Property?.Address ?? '');
+    const [Informations, setInformations] = useState(props.Property?.Informations ?? '');
+    const [currentMarker, setCurrentMarker] = useState(constructMarker(props.Property?.AreaJsonConfig));
     const [imageFiles, setImageFiles] = useState([]);
-
 
     const [selectedFileList, setSelectedFileList] = useState([]);
 
 
     const handlePropriedadeData = async (event) => {
         event.preventDefault();
-
         let areaJsonConfig = {
             type: 'point',
             cordinates: { lat: currentMarker.props.lat, lng: currentMarker.props.lng }
         };
 
+        const obj = {
+            Id,
+            Type,
+            Description,
+            Address,
+            Informations,
+            AreaJsonConfig: JSON.stringify(areaJsonConfig)
+        };
+
         if (Id) {
-            const response = await propriedadeService.update({
-                Id,
-                Tipo,
-                Descricao,
-                Endereco,
-                Informacoes,
-                AreaJsonConfig: JSON.stringify(areaJsonConfig)
-            });
+            const response = await PropertyService.update(obj);
 
-            let returnedId = response.data.Propriedade_ID;
+            let returnedId = response.data.Property_ID;
 
-            await propriedadeService.uploadPropriedadeImages(returnedId, imageFiles);
+            await PropertyService.uploadPropertyImages(returnedId, imageFiles);
 
         }
         else {
-            const response = await propriedadeService.create({
-                Tipo,
-                Descricao,
-                Endereco,
-                Informacoes,
-                AreaJsonConfig: JSON.stringify(areaJsonConfig)
-            });
+            const response = await PropertyService.create(obj);
 
-            let returnedId = response.Propriedade_ID;
-
-            await propriedadeService.uploadPropriedadeImages(returnedId, imageFiles);
+            let returnedId = response.Property_ID;
+            
+            await PropertyService.uploadPropertyImages(returnedId, imageFiles);
         }
 
         toast.success('Sucesso!');
@@ -76,12 +69,12 @@ export default function ModalPropriedade(props) {
     const [currentZoom, setCurrentZoom] = useState(3);
 
     const searchAddress = async () => {
-        let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(Endereco.replace(" ", "+"))}&key=${config.googleMapsApiKey}`);
+        let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(Address.replace(" ", "+"))}&key=${config.googleMapsApiKey}`);
         let result = (await response.json()).results[0];
         if (result) {
             setCurrentCenter(result.geometry.location);
             setCurrentZoom(18);
-            setCurrentMarker(<Marker lat={result.geometry.location.lat} lng={result.geometry.location.lng} propType={Tipo} />)
+            setCurrentMarker(<Marker lat={result.geometry.location.lat} lng={result.geometry.location.lng} propType={Type} />)
         }
         else {
             toast.warning(
@@ -98,8 +91,7 @@ export default function ModalPropriedade(props) {
     const showSelectedFileList = (files) => {
         let list = [];
         for (const file of files) {
-            console.log(file);
-            list.push(<div><img style={{ width: '50px', height: '50px' }} src={URL.createObjectURL(file)} /><span>{file.name}</span><br /></div>);
+            list.push(<div><img alt={file.name} style={{ width: '50px', height: '50px' }} src={URL.createObjectURL(file)} /><span>{file.name}</span><br /></div>);
         }
         setSelectedFileList(list);
     };
@@ -117,11 +109,11 @@ export default function ModalPropriedade(props) {
                     <Col xl={9} style={{ marginBottom: '5px' }}>
                         <FormControl
                             placeholder="Descreva a propriedade."
-                            value={Descricao}
-                            onChange={e => setDescricao(e.target.value)} />
+                            value={Description}
+                            onChange={e => setDescription(e.target.value)} />
                     </Col>
                     <Col xl={3} style={{ marginBottom: '5px' }}>
-                        <FormControl as="select" value={Tipo} onChange={e => setTipo(e.target.value)}>
+                        <FormControl as="select" value={Type} onChange={e => setType(e.target.value)}>
                             <option value="">Selecione um Tipo</option>
                             <option value="Casa">Casa</option>
                             <option value="Apartamento">Apartamento</option>
@@ -133,8 +125,8 @@ export default function ModalPropriedade(props) {
                     <Col xl={11} style={{ marginBottom: '5px' }}>
                         <FormControl
                             placeholder="Forneça-nos o endereço. Coloque o nome da rua, do bairro e da cidade ajudar na pesquisa! 😀"
-                            value={Endereco}
-                            onChange={e => setEndereco(e.target.value)}
+                            value={Address}
+                            onChange={e => setAddress(e.target.value)}
                         />
                     </Col>
                     <Col xl={1} style={{ marginBottom: '5px' }}>
@@ -143,8 +135,8 @@ export default function ModalPropriedade(props) {
                     <Col xl={6} style={{ marginBottom: '5px' }}>
                         <FormControl rows={5}
                             as="textarea"
-                            value={Informacoes}
-                            onChange={e => setInformacoes(e.target.value)}
+                            value={Informations}
+                            onChange={e => setInformations(e.target.value)}
                             placeholder="Informe aqui tudo o que você julga importante!&#10;Ex: 2 padarias e 1 pizzaria a 100 metros.&#10;Bairro contêm 1 hospital. &#10;Venda seu peixe! 🤣" />
                         <Form.File multiple accept="image/*" onChange={(e) => { setImageFiles(e.target.files); showSelectedFileList(e.target.files); }} style={{ marginTop: '5px' }} />
                         <div style={{ marginTop: '5px', overflowY: 'scroll', height: '150px' }}>

@@ -1,29 +1,31 @@
 import api from '../api';
+import { delSessionUser, setSessionUser } from '../Helpers/UserHelper';
 
 export default {
-    create: async (obj) => { 
-        const response = await api.post('/user', obj, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    create: async (obj, imgFile) => {
+        const response = await api.post('/user', obj);
+        
+        let formDataImg = new FormData();
+        formDataImg.append('User_ID',response.data.User_ID);
+        formDataImg.append('userImage',imgFile);
 
-        //login depois da criação de conta
-        const loginResponse = await api.post('/login', obj, { headers: { 'Content-Type': 'application/json' }});
-        localStorage.setItem('userInfo',JSON.stringify(loginResponse.data));
+        console.log(imgFile)
+
+        await api.post('/user/image', formDataImg, {
+            headers: { 'Content-type': `multipart/form-data; boundary=${formDataImg._boundary}`}
+        });
+        
+        const loginResponse = await api.post('/login', obj);
+        setSessionUser(loginResponse.data);
         window.location.href = '/';
     },
     login: async (obj) => {
-        const loginResponse = await api.post('/login', obj, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        localStorage.setItem('userInfo',JSON.stringify(loginResponse.data));
+        const loginResponse = await api.post('/login', obj);
+        setSessionUser(loginResponse.data);
         window.location.href = '/';
     },
     logout: () => {
-        localStorage.removeItem('userInfo');
+        delSessionUser();
         window.location.href = '/';
     }
 }

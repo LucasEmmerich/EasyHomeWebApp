@@ -2,6 +2,6 @@ import api from '../api';
 
 export default {
     getMapData: async () => {
-        return api.get('/propriedade');
+        return api.get('/property');
     }
 }

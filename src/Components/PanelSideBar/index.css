@@ -1,0 +1,44 @@
+/* The side navigation menu */
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 15vw;
+    background-color:#292b2c;
+    height: 100%;
+  }
+  
+  /* Sidebar links */
+  .sidebar a {
+    display: block;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+  } 
+  .sidebar a span {
+    font-size: 14px;
+  }
+  
+  /* Active/current link */
+  .sidebar a.active {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Links on mouse-over */
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+    text-decoration: none;
+  }
+  
+@media (max-width: 768px) { 
+
+.sidebar {
+  width: 8vw;
+}
+  .sidebar a span{
+    display: none;
+    font-size: 12px;
+  }
+}

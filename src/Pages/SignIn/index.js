@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../../Components/Header';
-import SignUp from '../../Components/SignUp';
 import Footer from '../../Components/Footer';
-import { getUser } from '../../Helpers/UserHelper';
+import SignInComponent from '../../Components/SignIn';
+import { getSessionUser } from '../../Helpers/UserHelper';
 
-export default function Register() {
-    const user = getUser();
+export default function SignIn() {
 
+    const user = getSessionUser();
     if (user) {
         window.location.href = "/";
     }
@@ -14,8 +14,8 @@ export default function Register() {
         return (
             <div>
                 <Header />
-                <div style={{ height: '85vh' }}>
-                    <SignUp />
+                <div style={{height: '85vh' }}>
+                    <SignInComponent />
                 </div>
                 <Footer />
             </div>

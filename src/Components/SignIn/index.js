@@ -3,16 +3,15 @@ import UserService from '../../Service/UserService';
 import { FaArrowRight } from 'react-icons/fa';
 import { Form, Button, ButtonGroup } from 'react-bootstrap';
 
-export default function Login() {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
+export default function SignIn() {
+    const [Login, setLogin] = useState('');
+    const [Password, setPassword] = useState('');
 
     async function handleLoginData(event) {
-        console.log('dale')
         event.preventDefault();
         await UserService.login({
-            Login: login,
-            Senha: password
+            Login,
+            Password
         });
     }
     return (
@@ -23,14 +22,14 @@ export default function Login() {
                     <Form.Control
                         type="text"
                         placeholder="Login"
-                        value={login}
+                        value={Login}
                         onChange={e => setLogin(e.target.value)} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Control
                         type="password"
                         placeholder="Password"
-                        value={password}
+                        value={Password}
                         onChange={e => setPassword(e.target.value)} />
                 </Form.Group>
                 <div className="flex-center">

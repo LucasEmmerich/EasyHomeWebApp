@@ -1,20 +1,20 @@
 import React from 'react';
 import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
-import PropriedadePainel from '../../Components/PropriedadePainel';
-import PainelUsuarioSideBar from '../../Components/PainelUsuarioSideBar';
-import { getUser } from '../../Helpers/UserHelper';
+import Chats from '../../Components/Chats';
+import PanelSideBar from '../../Components/PanelSideBar';
+import { getSessionUser } from '../../Helpers/UserHelper';
 
-export default function PainelUsuario() {
-    const user = getUser();
+export default function Chat() {
+    const user = getSessionUser();
 
     if (user) {
         return (
             <div>
                 <Header />
                 <div style={{ display: 'flex',height: '85vh' }}>
-                    <PainelUsuarioSideBar />
-                    <PropriedadePainel />
+                    <PanelSideBar/>
+                    <Chats/>
                 </div>
                 <Footer />
             </div>
