@@ -14,7 +14,7 @@ export default function SignIn() {
         return (
             <div>
                 <Header />
-                <div style={{height: '85vh' }}>
+                <div style={{ height: '83vh'}}>
                     <SignInComponent />
                 </div>
                 <Footer />

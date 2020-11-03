@@ -9,9 +9,7 @@ export default function Home() {
             <div>
                 <div>
                     <Header />
-                    <div style={{ height: '85vh' }}>
-                        <Map />
-                    </div>
+                    <Map />
                     <Footer />
                 </div>
             </div>

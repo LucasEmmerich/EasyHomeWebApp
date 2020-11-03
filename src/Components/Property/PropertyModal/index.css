@@ -1,0 +1,45 @@
+.fullscreen-modal{
+    min-width: 90% !important;
+    min-height: 90% !important;
+}
+.map{
+    position: relative;
+    width: 100%;
+    height: 330px;
+}
+.prop-name-div{
+    position: absolute;
+    top:3px;
+    left:10px;
+    width: 80% !important;
+}
+.select-prop-type-div{
+    position: absolute;
+    top:40px;
+    left:10px;
+    width: 80% !important;
+}
+.input-group-search-div{
+    position: absolute;
+    top:77px;
+    left:10px;
+    width: 95% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+@media (max-width: 768px){
+    .files-preview-div{
+        display:none;
+    }
+}

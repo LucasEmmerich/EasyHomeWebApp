@@ -30,7 +30,7 @@ export default class Marker extends Component {
             width={30} 
             height={30}  
             src={getIcon(this.props.propType)} 
-            style={{transform: 'translate(-50%, -100%)',cursor:'pointer'}}
+            style={{transform: 'translate(-50%, -100%)',cursor:'pointer',zIndex:'2'}}
             alt="" 
             onClick={this.props.onClick}
             />

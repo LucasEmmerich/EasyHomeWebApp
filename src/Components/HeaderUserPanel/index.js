@@ -11,8 +11,8 @@ export default function HeaderUserPanel() {
 
     if (user) {
         return (
-            <Navbar bg='dark' style={{ minHeight: '8vh' }}>
-                <Navbar.Brand href="/home" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
+            <Navbar style={{ height: '11vh', width:'100%',backgroundColor:'#292b2c' }}>
+                <Navbar.Brand href="/" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
                 <Nav className="mr-auto" href="/tutorial" style={{ color: 'white' }} > Tutorial </Nav>
                 <Nav>
                     <Image className="mb-1" alt={user.userInformation.Name} roundedCircle src={userImage} style={{ width: '30px', height: '30px', margin: '5px' }} />
@@ -25,8 +25,8 @@ export default function HeaderUserPanel() {
     }
     else {
         return (
-            <Navbar bg='dark' expand='lg' style={{ minHeight: '8vh' }}>
-                <Navbar.Brand href="/home" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
+            <Navbar bg='dark' expand='lg'  style={{ height: '11vh', width:'100%'}}>
+                <Navbar.Brand href="/" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
                 <Nav className="mr-auto" href="/tutorial" style={{ color: 'white' }} > Tutorial </Nav>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: 'white' }} />
                 <Navbar.Collapse id="basic-navbar-nav">

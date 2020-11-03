@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom';
 import Routes from './routes';
 import './globalStyle.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import Modal from 'react-modal';
-
-Modal.setAppElement('#root')
 
 ReactDOM.render(
   <Routes/>,

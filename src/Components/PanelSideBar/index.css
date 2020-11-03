@@ -2,9 +2,8 @@
 .sidebar {
     margin: 0;
     padding: 0;
-    width: 15vw;
+    width: 12vw;
     background-color:#292b2c;
-    height: 100%;
   }
   
   /* Sidebar links */
@@ -15,7 +14,7 @@
     text-decoration: none;
   } 
   .sidebar a span {
-    font-size: 14px;
+    font-size: 18px;
   }
   
   /* Active/current link */

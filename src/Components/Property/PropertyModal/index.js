@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaFileUpload, FaSave } from 'react-icons/fa';
 import Marker from '../../Marker';
 import PropertyService from '../../../Service/PropertyService';
 import { toast } from 'react-toastify';
-import { Modal, Form, FormControl, Col, Row, Button } from 'react-bootstrap';
+import { Modal, Form, FormControl, Button } from 'react-bootstrap';
+import MapService from '../../../Service/MapService';
+import './index.css';
 const config = require('../../../../package.json').config;
 
 export default function PropertyPanel(props) {
+
     const constructMarker = (obj) => {
         if (obj) {
             const objCoordinates = JSON.parse(JSON.parse(obj));
@@ -56,7 +59,7 @@ export default function PropertyPanel(props) {
             const response = await PropertyService.create(obj);
 
             let returnedId = response.Property_ID;
-            
+
             await PropertyService.uploadPropertyImages(returnedId, imageFiles);
         }
 
@@ -69,8 +72,8 @@ export default function PropertyPanel(props) {
     const [currentZoom, setCurrentZoom] = useState(3);
 
     const searchAddress = async () => {
-        let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(Address.replace(" ", "+"))}&key=${config.googleMapsApiKey}`);
-        let result = (await response.json()).results[0];
+        let results = await MapService.searchAddressOnMaps(Address);
+        let result = results[0]; //best match
         if (result) {
             setCurrentCenter(result.geometry.location);
             setCurrentZoom(18);
@@ -91,73 +94,86 @@ export default function PropertyPanel(props) {
     const showSelectedFileList = (files) => {
         let list = [];
         for (const file of files) {
-            list.push(<div><img alt={file.name} style={{ width: '50px', height: '50px' }} src={URL.createObjectURL(file)} /><span>{file.name}</span><br /></div>);
+            list.push(
+                <div>
+                    <img alt={file.name} style={{ width: '50px', height: '50px' }} src={URL.createObjectURL(file)} />
+                    <span>{file.name}</span>
+                    <br />
+                </div>
+            );
         }
         setSelectedFileList(list);
     };
 
     return (
-        <Modal 
-        show={props.modalOpen} 
-        onHide={props.closeFunction} 
-        size='xl'>
+        <Modal
+            show={props.modalOpen}
+            onHide={props.closeFunction}
+            dialogClassName="fullscreen-modal">
             <Modal.Header closeButton>
                 <Modal.Title>Propriedade</Modal.Title>
             </Modal.Header>
-            <Form style={{margin:'5px'}}>
-                <Row>
-                    <Col xl={9} style={{ marginBottom: '5px' }}>
+            <Form>
+                <div className="map">
+                    <GoogleMapReact
+                        bootstrapURLKeys={{ key: config.googleMapsApiKey, language: "pt-BR" }}
+                        zoom={currentZoom}
+                        center={currentCenter}
+                        options={{ streetViewControl: true }}>
+                        {currentMarker}
+                    </GoogleMapReact>
+                    <FormControl
+                        placeholder="Descreva a propriedade."
+                        value={Description}
+                        onChange={e => setDescription(e.target.value)}
+                        className="prop-name-div"
+                        size='sm' />
+                    <FormControl as="select"
+                        value={Type}
+                        onChange={e => setType(e.target.value)}
+                        className="select-prop-type-div"
+                        size='sm'>
+                        <option value="">Selecione um Tipo</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Apartamento">Apartamento</option>
+                        <option value="Terreno">Terreno</option>
+                        <option value="Comercial">Comercial</option>
+                        <option value="República">República</option>
+                    </FormControl>
+                    <div className="input-group-search-div">
                         <FormControl
-                            placeholder="Descreva a propriedade."
-                            value={Description}
-                            onChange={e => setDescription(e.target.value)} />
-                    </Col>
-                    <Col xl={3} style={{ marginBottom: '5px' }}>
-                        <FormControl as="select" value={Type} onChange={e => setType(e.target.value)}>
-                            <option value="">Selecione um Tipo</option>
-                            <option value="Casa">Casa</option>
-                            <option value="Apartamento">Apartamento</option>
-                            <option value="Terreno">Terreno</option>
-                            <option value="Comercial">Comercial</option>
-                            <option value="República">República</option>
-                        </FormControl>
-                    </Col>
-                    <Col xl={11} style={{ marginBottom: '5px' }}>
-                        <FormControl
-                            placeholder="Forneça-nos o endereço. Coloque o nome da rua, do bairro e da cidade ajudar na pesquisa! 😀"
+                            placeholder="Pesquisar endereço..."
                             value={Address}
                             onChange={e => setAddress(e.target.value)}
+                            size='sm'
                         />
-                    </Col>
-                    <Col xl={1} style={{ marginBottom: '5px' }}>
-                        <Button variant='primary' onClick={searchAddress}><FaSearch size={16} /></Button>
-                    </Col>
-                    <Col xl={6} style={{ marginBottom: '5px' }}>
-                        <FormControl rows={5}
-                            as="textarea"
-                            value={Informations}
-                            onChange={e => setInformations(e.target.value)}
-                            placeholder="Informe aqui tudo o que você julga importante!&#10;Ex: 2 padarias e 1 pizzaria a 100 metros.&#10;Bairro contêm 1 hospital. &#10;Venda seu peixe! 🤣" />
-                        <Form.File multiple accept="image/*" onChange={(e) => { setImageFiles(e.target.files); showSelectedFileList(e.target.files); }} style={{ marginTop: '5px' }} />
-                        <div style={{ marginTop: '5px', overflowY: 'scroll', height: '150px' }}>
-                            {selectedFileList}
-                        </div>
-                    </Col>
-                    <Col xl={6}>
-                        <GoogleMapReact
-                            bootstrapURLKeys={{ key: config.googleMapsApiKey, language: "pt-BR" }}
-                            zoom={currentZoom}
-                            center={currentCenter}
-                            options={{ streetViewControl: true }}>
-                            {currentMarker}
-                        </GoogleMapReact>
-                    </Col>
-                </Row>
+                        <Button variant='primary' style={{ padding: '3.5px', width: '60px' }} size='sm' onClick={searchAddress}><FaSearch size={16} /></Button>
+                    </div>
+                </div>
+                <FormControl rows={4}
+                    style={{ margin: '0 auto', marginTop: '5px', width: '80%' }}
+                    as="textarea"
+                    value={Informations}
+                    onChange={e => setInformations(e.target.value)}
+                    size='sm'
+                    placeholder="Informe aqui tudo o que você julga importante!" />
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '5px' }}>
+                    <label className="custom-file-upload">
+                        <Form.File multiple accept="image/*" onChange={(e) => {
+                            setImageFiles(e.target.files);
+                            showSelectedFileList(e.target.files);
+                        }} />
+                        <FaFileUpload size={14} />
+                    </label>
+                    <span style={{ fontWeight: '700', padding: '0px 0px 10px 10px' }}>{selectedFileList.length} arquivos.</span>
+                </div>
+                <div style={{ right: '5px', bottom: '5px', position: 'absolute' }}>
+                    <Button variant='primary' onClick={handlePropriedadeData} style={{ display: 'flex', alignItems: 'center' }}>
+                        <FaSave size={16} />
+                        <span style={{ fontWeight: '700', marginLeft: '2px' }}> Salvar</span>
+                    </Button>
+                </div>
             </Form>
-            <Modal.Footer>
-                <Button variant='danger' onClick={props.closeFunction}>Fechar</Button>
-                <Button variant='primary' onClick={handlePropriedadeData}>Salvar</Button>
-            </Modal.Footer>
         </Modal>
     );
 }

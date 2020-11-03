@@ -12,7 +12,7 @@ export default function Chat() {
         return (
             <div>
                 <Header />
-                <div style={{ display: 'flex',height: '85vh' }}>
+                <div style={{ display: 'flex',height: '83vh' }}>
                     <PanelSideBar/>
                     <Chats/>
                 </div>

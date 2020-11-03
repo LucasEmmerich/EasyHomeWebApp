@@ -14,7 +14,7 @@ export default function Register() {
         return (
             <div>
                 <Header />
-                <div style={{ height: '85vh' }}>
+                <div style={{ height: '83vh' }}>
                     <SignUpComponent />
                 </div>
                 <Footer />
