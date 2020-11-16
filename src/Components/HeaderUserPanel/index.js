@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPowerOff, FaList } from 'react-icons/fa';
+import { FaPowerOff, FaList, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import { Image, Nav, Navbar } from 'react-bootstrap';
 import NoUserImage from '../../assets/imgs/NoUserImage.jpg';
 const config = require('../../../package.json').config;
@@ -11,12 +11,12 @@ export default function HeaderUserPanel() {
 
     if (user) {
         return (
-            <Navbar style={{ height: '11vh', width:'100%',backgroundColor:'#292b2c' }}>
+            <Navbar style={{ height: '8vh', width: '100%', backgroundColor: '#292b2c' }}>
                 <Navbar.Brand href="/" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
                 <Nav className="mr-auto" href="/tutorial" style={{ color: 'white' }} > Tutorial </Nav>
                 <Nav>
-                    <Image className="mb-1" alt={user.userInformation.Name} roundedCircle src={userImage} style={{ width: '30px', height: '30px', margin: '5px' }} />
-                    <Nav.Link href="/account" style={{ color: 'white' }}>{user.userInformation.Name}</Nav.Link>
+                    <Image className="mb-1" alt={user.userInformation.FirstName} roundedCircle src={userImage} style={{ width: '30px', height: '30px', margin: '5px' }} />
+                    <Nav.Link href="/account" style={{ color: 'white' }}>{user.userInformation.FirstName}</Nav.Link>
                     <Nav.Link href="/property"><FaList color='lightblue' /></Nav.Link>
                     <Nav.Link href="/logout"><FaPowerOff color='red' /></Nav.Link>
                 </Nav>
@@ -25,21 +25,25 @@ export default function HeaderUserPanel() {
     }
     else {
         return (
-            <Navbar bg='dark' expand='lg'  style={{ height: '11vh', width:'100%'}}>
+            <Navbar bg='dark' expand='lg' style={{ height: '8vh', width: '100%' }}>
                 <Navbar.Brand href="/" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
-                <Nav className="mr-auto" href="/tutorial" style={{ color: 'white' }} > Tutorial </Nav>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: 'white' }} />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }} className="ml-auto">
-                        <Nav.Link href="/register" style={{ color: 'white' }}> Criar Conta </Nav.Link>
-                        <Nav.Link href="/login" style={{ color: 'white' }}> Logar  </Nav.Link>
-                    </div>
-                </Navbar.Collapse>
+                <div className="d-flex" style={{ position: 'absolute', right: 0 }}>
+                    <Nav.Link href="/register" style={{ color: 'white' }}>
+                        <div className="flex-box d-flex">
+                            <span className="m-1 font-weight-bold hideOnMobile">Registrar </span>
+                            <FaUserPlus size={20}/>
+                        </div>
+                    </Nav.Link>
+                    <Nav.Link href="/login" style={{ color: 'white' }}>
+                        <div className="flex-box d-flex">
+                            <span className="m-1 font-weight-bold hideOnMobile">Entrar </span>
+                            <FaSignInAlt size={20}/>
+                        </div>
+                    </Nav.Link>
+                </div>
             </Navbar>
         )
-
     }
 }
-       
-       
-       
+
+

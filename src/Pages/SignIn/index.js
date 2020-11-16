@@ -5,20 +5,16 @@ import SignInComponent from '../../Components/SignIn';
 import { getSessionUser } from '../../Helpers/UserHelper';
 
 export default function SignIn() {
-
     const user = getSessionUser();
-    if (user) {
-        window.location.href = "/";
-    }
+
+    if (user) window.location.href = "/"; 
     else {
         return (
-            <div>
+            <section>
                 <Header />
-                <div style={{ height: '83vh'}}>
-                    <SignInComponent />
-                </div>
+                <SignInComponent />
                 <Footer />
-            </div>
+            </section>
         );
     }
 }

@@ -7,18 +7,14 @@ import { getSessionUser } from '../../Helpers/UserHelper';
 export default function Register() {
     const user = getSessionUser();
 
-    if (user) {
-        window.location.href = "/";
-    }
+    if (user) window.location.href = "/"; 
     else {
         return (
-            <div>
+            <section>
                 <Header />
-                <div style={{ height: '83vh' }}>
-                    <SignUpComponent />
-                </div>
+                <SignUpComponent />
                 <Footer />
-            </div>
+            </section>
         );
     }
 }

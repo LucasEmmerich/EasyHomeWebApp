@@ -11,7 +11,8 @@ toast.configure();
 
 export default function SignUp() {
 
-    const [Name, setName] = useState('');
+    const [FirstName, setFirstName] = useState('');
+    const [LastName, setLastName] = useState('');
     const [Contact, setContact] = useState('');
     const [Email, setEmail] = useState('');
     const [Login, setLogin] = useState('');
@@ -32,7 +33,8 @@ export default function SignUp() {
     const handleRegisterData = async (event) => {
         event.preventDefault();
         await userService.create({
-            Name,
+            FirstName,
+            LastName,
             Contact,
             Email,
             Login,
@@ -44,7 +46,7 @@ export default function SignUp() {
     }
 
     return (
-        <Form style={{padding:'25px'}} >
+        <Form style={{ padding: '25px',height:'86vh' }} >
             <h1 className="text-center">EasyHome</h1>
             <Row>
                 <Col lg={4} className="d-flex justify-content-center">
@@ -53,13 +55,19 @@ export default function SignUp() {
                     <Form.File id='fileSelect' onChange={onImageUpload} style={{ display: 'none' }} />
                 </Col>
                 <Col lg={8}>
-                    <Form.Group>
+                    <Form.Group style={{display:'flex'}}>
                         <Form.Control
                             type="text"
                             placeholder="Nome"
                             size='sm'
-                            value={Name}
-                            onChange={e => setName(e.target.value)} />
+                            value={FirstName}
+                            onChange={e => setFirstName(e.target.value)} />
+                        <Form.Control
+                            type="text"
+                            placeholder="Sobrenome"
+                            size='sm'
+                            value={LastName}
+                            onChange={e => setLastName(e.target.value)} />
                     </Form.Group>
                     <Form.Group>
                         <Form.Control

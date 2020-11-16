@@ -55,7 +55,7 @@ export default function Map() {
   };
 
   return (
-    <section style={{ height: '83vh', position: 'relative' }}>
+    <section style={{ height: '86vh', position: 'relative' }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: config.googleMapsApiKey, language: "pt-BR" }}
         center={center}

@@ -5,14 +5,12 @@ import PropertyService from '../../Service/PropertyService';
 import PropertyCard from '../Cards/PropertyCard';
 
 export default function Property() {
-    const [modal, setModal] = useState(null);
+    const [modal, setModal] = useState();
 
-    const newPropOpenModal = () => {
-        setModal(<PropertyModal modalOpen={true} closeFunction={closeModal} Property={null} />);
-    }
-    const editPropOpenModal = (p) => {
+    const openModal = (p = null) => {
         setModal(<PropertyModal modalOpen={true} closeFunction={closeModal} Property={p} />);
     }
+
     const closeModal = () => {
         setModal(null);
         getPropertyList();
@@ -25,16 +23,18 @@ export default function Property() {
 
     const [propriedades, setPropriedades] = useState([]);
     const getPropertyList = () => {
-        PropertyService.list().then(r => setPropriedades(r.data));
+        PropertyService.list().then(r => {setPropriedades(r.data)});
     }
 
-    useEffect(() => { getPropertyList(); }, []);
+    useEffect(() => {
+        getPropertyList();
+    }, []);
 
     return (
-        <div style={{ width: '100vw',overflowY:'scroll' }}>
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between' }}>
+        <div style={{ width: '100vw', overflowY: 'scroll' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span className="showOnMobile m-1">Clique para editar</span>
-                <Button variant='success' onClick={newPropOpenModal} className="m-1">Novo</Button>
+                <Button variant='success' onClick={openModal} className="m-1">Novo</Button>
             </div>
             {
                 propriedades.length > 0 ?
@@ -42,7 +42,7 @@ export default function Property() {
                         <PropertyCard
                             Property={p}
                             key={p.Id}
-                            onEdit={() => { editPropOpenModal(p) }}
+                            onEdit={() => { openModal(p) }}
                             onDelete={() => { deletePropHandler(p.Id) }} />
                     ))
                     :

@@ -19,6 +19,22 @@ body{
     flex-direction: row;
 }
 
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.notification{
+    font-weight: 500;
+    width:300px;
+}
+
+.notification h4,h6{
+    text-align: center;
+    word-wrap: break-word;
+}
+
 .showOnMobile{
     font-weight: 500;
     visibility: hidden;
@@ -29,9 +45,26 @@ body{
     }
 }
 
+.hideOnMobile{
+    font-weight: 500;
+    display: block;
+}
+@media (max-width:768px){
+    .hideOnMobile{
+        display: none;
+    }
+}
+
 .text-break-default{
     display: inline-block;
     word-break: break-word;
+}
+
+.flex-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
 }
 
 input[type=checkbox]  {

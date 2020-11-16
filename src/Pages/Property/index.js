@@ -12,15 +12,13 @@ export default function Property() {
         return (
             <div>
                 <Header />
-                <div style={{ display: 'flex',height: '83vh' }}>
-                    <PanelSideBar/>
-                    <PropertyComponent/>
+                <div style={{ display: 'flex', height: '86vh' }}>
+                    <PanelSideBar />
+                    <PropertyComponent />
                 </div>
                 <Footer />
             </div>
         );
     }
-    else {
-        window.location.href = "/login";
-    }
+    else window.location.href = "/";
 }

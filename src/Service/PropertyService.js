@@ -7,7 +7,8 @@ export default {
         return response.data;
     },
     update: async (obj) => {
-        await api.put('/property', obj, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() }, })
+        const response = await api.put('/property', obj, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() }, });
+        return response.data;
     },
     list: () => {
         return api.get('/user/property', { headers: { authorization: tokenHelper.getTokenFromCurrentUser()} });

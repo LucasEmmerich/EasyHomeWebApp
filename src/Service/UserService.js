@@ -8,9 +8,7 @@ export default {
         let formDataImg = new FormData();
         formDataImg.append('User_ID',response.data.User_ID);
         formDataImg.append('userImage',imgFile);
-
-        console.log(imgFile)
-
+        
         await api.post('/user/image', formDataImg, {
             headers: { 'Content-type': `multipart/form-data; boundary=${formDataImg._boundary}`}
         });
@@ -21,8 +19,8 @@ export default {
     },
     login: async (obj) => {
         const loginResponse = await api.post('/login', obj);
-        setSessionUser(loginResponse.data);
-        window.location.href = '/';
+        if(loginResponse.data.auth) setSessionUser(loginResponse.data);
+        return loginResponse.data;
     },
     logout: () => {
         delSessionUser();

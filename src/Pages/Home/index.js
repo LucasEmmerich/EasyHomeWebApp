@@ -5,14 +5,10 @@ import Map from '../../Components/Map';
 
 export default function Home() {
     return (
-        <div>
-            <div>
-                <div>
-                    <Header />
-                    <Map />
-                    <Footer />
-                </div>
-            </div>
-        </div>
+        <section>
+            <Header />
+            <Map />
+            <Footer />
+        </section>
     );
 }

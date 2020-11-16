@@ -12,7 +12,7 @@ export default function Chat() {
         return (
             <div>
                 <Header />
-                <div style={{ display: 'flex',height: '83vh' }}>
+                <div style={{ display: 'flex',height: '86vh' }}>
                     <PanelSideBar/>
                     <Chats/>
                 </div>
@@ -20,7 +20,5 @@ export default function Chat() {
             </div>
         );
     }
-    else {
-        window.location.href = "/login";
-    }
+    else window.location.href = "/"; 
 }

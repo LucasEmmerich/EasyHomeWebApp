@@ -19,7 +19,7 @@ export default function Chats(props) {
     useEffect(() => {
         async function load() {
             await getChatsFromCurrentUser();
-        }
+        };
         load();
         // eslint-disable-next-line
     }, []);
@@ -65,7 +65,7 @@ export default function Chats(props) {
             <div className="leftSideBar">
                 <div className="cur-user">
                     <img className="user-icon" src={userImage} alt="" />
-                    <span className="user-name">{user.userInformation.Name}</span>
+                    <span className="user-name">{user.userInformation.FirstName}</span>
                 </div>
                 {chats}
             </div>
