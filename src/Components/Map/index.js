@@ -48,10 +48,12 @@ export default function Map() {
 
   const searchAddressOnMaps = async (e) => {
     e.preventDefault();
-    let results = await MapService.searchAddressOnMaps(searchAddressText);
-    let result = results[0]; //best match
-    setZoom(13);
-    setCenter(result.geometry.location);
+    if(searchAddressText){
+      let results = await MapService.searchAddressOnMaps(searchAddressText);
+      let result = results[0]; //best match
+      setZoom(13);
+      setCenter(result.geometry.location);
+    };
   };
 
   return (

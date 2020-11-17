@@ -175,7 +175,7 @@ export default function PropertyPanel(props) {
                             value={Informations}
                             onChange={e => setInformations(e.target.value)}
                             size='sm'
-                            placeholder="Informe aqui tudo o que você julga importante!" />
+                            placeholder="Informe aqui tudo o que você julga importante!&#10;Ex:&#10;Um supermercado ao lado;&#10;Perto de um hospital..." />
                     </Form.Group>
                 </Form.Row>
                 <Form.Row style={{ position: 'relative' }}>
