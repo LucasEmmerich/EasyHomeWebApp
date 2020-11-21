@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "config": {
-    "dsvApiAddress": "http://192.168.100.18:3333",
-    "prdApiAddress": "http://54.207.254.111",
+    "apiAddress": "http://54.207.254.111",
     "googleMapsApiKey": "AIzaSyCWNa6q-8kpV194TiwjpcNLhDiULUtq0Fw",
     "systemMail": {
       "email": "noreply.easyhome@gmail.com",
