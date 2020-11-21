@@ -3,10 +3,10 @@ import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
 import PropertyComponent from '../../Components/Property';
 import PanelSideBar from '../../Components/PanelSideBar';
-import { getSessionUser } from '../../Helpers/UserHelper';
+import UserHelper from '../../Helpers/UserHelper';
 
 export default function Property() {
-    const user = getSessionUser();
+    const user = UserHelper.getSessionUser();
 
     if (user) {
         return (

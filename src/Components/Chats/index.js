@@ -16,7 +16,7 @@ export default function Chats(props) {
         setChat(<UserChat chatID={chatID} chatWith={chatWith} />)
     }
 
-    useEffect(() => {
+    useEffect( () => {
         async function load() {
             await getChatsFromCurrentUser();
         };

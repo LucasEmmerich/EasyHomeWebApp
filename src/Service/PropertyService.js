@@ -1,7 +1,7 @@
 import tokenHelper from '../Helpers/TokenHelper';
 import api from '../api';
 
-export default {
+const PropertyService =  {
     create: async (obj) => {
         const response = await api.post('/property', obj, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() } });
         return response.data;
@@ -27,3 +27,5 @@ export default {
         });
     }
 }
+
+export default PropertyService;

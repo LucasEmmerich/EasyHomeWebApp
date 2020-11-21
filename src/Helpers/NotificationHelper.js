@@ -9,7 +9,7 @@ const options = {
     closeButton: true
 }
 
-export default {
+const NotificationHelper = {
     alertSuccess: (message = 'Sucesso!') => {
         toast.success(
             <div className="notification">
@@ -47,3 +47,5 @@ export default {
         )
     }
 }
+
+export default NotificationHelper

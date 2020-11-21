@@ -1,7 +1,7 @@
 import tokenHelper from '../Helpers/TokenHelper';
 import api from '../api';
 
-export default {
+const ChatService = {
     addChat: async (chat) => {
         await api.post('/chat',chat, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() } });
     },
@@ -14,3 +14,5 @@ export default {
         return response;
     }
 }
+
+export default ChatService;

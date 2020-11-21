@@ -4,8 +4,12 @@
   "private": true,
   "config": {
     "dsvApiAddress": "http://192.168.100.18:3333",
-    "prdApiAddress": "",
-    "googleMapsApiKey": "AIzaSyCWNa6q-8kpV194TiwjpcNLhDiULUtq0Fw"
+    "prdApiAddress": "http://54.207.254.111",
+    "googleMapsApiKey": "AIzaSyCWNa6q-8kpV194TiwjpcNLhDiULUtq0Fw",
+    "systemMail": {
+      "email": "noreply.easyhome@gmail.com",
+      "password": "3927812437292187"
+    }
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",

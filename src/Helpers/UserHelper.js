@@ -1,8 +1,14 @@
-module.exports = {
-
-    getSessionUser: () => {
+class UserHelper{
+    static getSessionUser(){
         return JSON.parse(localStorage.getItem('userInfo'));
-    },
-    setSessionUser: (user) => localStorage.setItem('userInfo',JSON.stringify(user)),
-    delSessionUser: () => localStorage.removeItem('userInfo')
+    };
+    
+    static setSessionUser(user){
+        localStorage.setItem('userInfo', JSON.stringify(user));
+    };
+    
+    static delSessionUser(){
+        localStorage.removeItem('userInfo');
+    };
 }
+export default UserHelper;

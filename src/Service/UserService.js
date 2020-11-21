@@ -1,29 +1,36 @@
 import api from '../api';
-import { delSessionUser, setSessionUser } from '../Helpers/UserHelper';
+import UserHelper from '../Helpers/UserHelper';
 
-export default {
+const UserService = {
     create: async (obj, imgFile) => {
         const response = await api.post('/user', obj);
-        
-        let formDataImg = new FormData();
-        formDataImg.append('User_ID',response.data.User_ID);
-        formDataImg.append('userImage',imgFile);
-        
-        await api.post('/user/image', formDataImg, {
-            headers: { 'Content-type': `multipart/form-data; boundary=${formDataImg._boundary}`}
+
+        if(imgFile){
+            let formDataImg = new FormData();
+            formDataImg.append('User_ID',response.data.User_ID);
+            formDataImg.append('userImage',imgFile);
+
+            await api.post('/user/image', formDataImg, {
+                headers: { 'Content-type': `multipart/form-data; boundary=${formDataImg._boundary}`}
+            });
+        }
+
+        const loginResponse = await api.post('/login', { 
+            Login: obj.Login,
+            Password: obj.Password
         });
-        
-        const loginResponse = await api.post('/login', obj);
-        setSessionUser(loginResponse.data);
+        UserHelper.setSessionUser(loginResponse.data);
         window.location.href = '/';
     },
     login: async (obj) => {
         const loginResponse = await api.post('/login', obj);
-        if(loginResponse.data.auth) setSessionUser(loginResponse.data);
+        if(loginResponse.data.auth) UserHelper.setSessionUser(loginResponse.data);
         return loginResponse.data;
     },
     logout: () => {
-        delSessionUser();
+        UserHelper.delSessionUser();
         window.location.href = '/';
     }
 }
+
+export default UserService;

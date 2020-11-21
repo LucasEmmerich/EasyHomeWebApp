@@ -1,7 +1,7 @@
 import api from '../api';
 const config = require('../../package.json').config;
 
-export default {
+const MapService = {
     getMapData: async (filters) => {
         return api.get(`/property?Types=${filters.Types.join(',')}&SaleTypes=${filters.SaleTypes.join(',')}`);
     },
@@ -11,3 +11,5 @@ export default {
         return results;
     }
 }
+
+export default MapService;

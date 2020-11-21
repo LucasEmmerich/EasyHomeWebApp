@@ -3,6 +3,7 @@ import './index.css';
 import ChatService from '../../../Service/ChatService';
 import userHelper from '../../../Helpers/UserHelper';
 import { useState, useEffect } from 'react';
+import NoUserImage from '../../../assets/imgs/NoUserImage.jpg';
 import soundfile from '../../../assets/sounds/chatSound.mp3';
 const config = require('../../../../package.json').config;
 
@@ -21,7 +22,11 @@ export default function UserChat(props) {
             if (x.User_ID === curUser.userInformation.Id) {
                 msgs.push(
                     <div className='msg right-msg' key={x.Id}>
-                        <img className="msg-img" src={config.dsvApiAddress + curUser.userInformation.ProfileImageUrl} alt="" />
+                        <img className="msg-img" src={curUser.userInformation.ProfileImageUrl === null
+                            ?
+                            NoUserImage 
+                            :
+                            config.dsvApiAddress + curUser.userInformation.ProfileImageUrl} alt="" />
                         <div className="msg-bubble">
                             <div className="msg-info">
                                 <div className="msg-info-name">{curUser.userInformation.FirstName}</div>

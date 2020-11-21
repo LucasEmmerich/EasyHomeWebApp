@@ -157,7 +157,7 @@ export default function SignUp() {
             </InputGroup>
             <p className="text-center">
                 <Button variant='link' href="/login" size='sm'>Já tenho uma conta!</Button>
-                <Button variant='success' size='sm' className="m-1" type='submit'>Registrar <FaCheck /> </Button>
+                <Button variant='success' size='sm' className="m-1" type="submit">Registrar <FaCheck /> </Button>
             </p>
         </Form>
     );
