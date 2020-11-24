@@ -29,9 +29,9 @@ export default function PropertyPanel(props) {
         const imagesSrc = props.Property?.Images;
 
         if (obj) {
-            const objCoordinates = JSON.parse(JSON.parse(obj));
-            let cordinates = objCoordinates.cordinates;
-            setCurrentMarker(<Marker lat={cordinates.lat} lng={cordinates.lng} propType={Type} />);
+            const objCoordinates = JSON.parse(obj);
+            const coordinates = objCoordinates.coordinates;
+            setCurrentMarker(<Marker lat={coordinates.lat} lng={coordinates.lng} propType={Type} />);
         }
         if (imagesSrc) setImagesCounter(imagesSrc.length); 
         // eslint-disable-next-line 
@@ -51,7 +51,7 @@ export default function PropertyPanel(props) {
 
             const areaJsonConfig = {
                 type: 'point',
-                cordinates: { lat: currentMarker.props.lat, lng: currentMarker.props.lng }
+                coordinates: { lat: currentMarker.props.lat, lng: currentMarker.props.lng }
             };
 
             const obj = {
@@ -89,6 +89,7 @@ export default function PropertyPanel(props) {
             setCurrentCenter(result.geometry.location);
             setCurrentZoom(18);
             setCurrentMarker(<Marker lat={result.geometry.location.lat} lng={result.geometry.location.lng} propType={Type} />)
+            setAddress(result.formatted_address);
         }
         else NotificationHelper.alertInformation('Busca de endereço falhou! Seja mais específico, escreva todo o endereço! Ex: Rua Brasil 103 Varginha RJ.');
     };

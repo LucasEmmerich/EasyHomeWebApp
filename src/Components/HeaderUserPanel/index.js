@@ -15,8 +15,8 @@ export default function HeaderUserPanel() {
                 <Navbar.Brand href="/" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
                 <Nav className="mr-auto" href="/tutorial" style={{ color: 'white' }} > Tutorial </Nav>
                 <Nav>
-                    <Image className="mb-1" alt={user.userInformation.FirstName} roundedCircle src={userImage} style={{ width: '30px', height: '30px', margin: '5px' }} />
-                    <Nav.Link href="/account" style={{ color: 'white' }}>{user.userInformation.FirstName}</Nav.Link>
+                    <Image className="mb-1" alt={user.userInformation.FirstName} roundedCircle src={userImage} style={{ width: '30px', height: '30px', marginTop: '5px' }} />
+                    <Nav.Link href="/account" style={{ color: 'white' }} ><span className="hideOnMobile">{user.userInformation.FirstName}</span></Nav.Link>
                     <Nav.Link href="/property"><FaList color='lightblue' /></Nav.Link>
                     <Nav.Link href="/logout"><FaPowerOff color='red' /></Nav.Link>
                 </Nav>

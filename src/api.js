@@ -2,7 +2,7 @@ import axios from 'axios';
 const config = require('../package.json').config;
 
 const api = axios.create({
-    baseURL : config.apiAddress
+    baseURL : config.dsvApiAddress
 });
 
 export default api;

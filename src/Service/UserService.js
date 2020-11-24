@@ -4,9 +4,9 @@ import UserHelper from '../Helpers/UserHelper';
 const UserService = {
     create: async (obj, imgFile) => {
         const response = await api.post('/user', obj);
-
+        
         if(imgFile){
-            let formDataImg = new FormData();
+            const formDataImg = new FormData();
             formDataImg.append('User_ID',response.data.User_ID);
             formDataImg.append('userImage',imgFile);
 

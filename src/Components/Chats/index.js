@@ -5,7 +5,7 @@ import NoUserImage from '../../assets/imgs/NoUserImage.jpg';
 import UserChat from './UserChat';
 const config = require('../../../package.json').config;
 
-export default function Chats(props) {
+export default function Chats() {
     const user = JSON.parse(localStorage.getItem('userInfo'));
     const userImage = user?.userInformation?.ProfileImageUrl ? config.dsvApiAddress + user?.userInformation?.ProfileImageUrl : NoUserImage;
     const [chats, setChats] = useState([]);

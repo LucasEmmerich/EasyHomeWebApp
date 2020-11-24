@@ -5,7 +5,7 @@ import userHelper from '../../../Helpers/UserHelper';
 import { useState, useEffect } from 'react';
 import NoUserImage from '../../../assets/imgs/NoUserImage.jpg';
 import soundfile from '../../../assets/sounds/chatSound.mp3';
-const config = require('../../../../package.json').config;
+import { config } from '../../../../package.json';
 
 export default function UserChat(props) {
     const curUser = userHelper.getSessionUser();

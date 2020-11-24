@@ -31,9 +31,9 @@ export default function Map() {
 
   const loadPropertyes = (filters = { Types: ['Casa','Apartamento','Terreno','Comercial','República'], SaleTypes: ['Venda','Aluguel'] }) => {
     MapService.getMapData(filters).then(r => {
-      let propertyMarkers = [];
+      const propertyMarkers = [];
       for (const p of r.data) {
-        let location = JSON.parse(JSON.parse(p.AreaJsonConfig)).cordinates;
+        const location = JSON.parse(p.AreaJsonConfig).coordinates;
         propertyMarkers.push(<Marker lat={location.lat} lng={location.lng} propType={p.Type} onClick={() => onClickMarker(p)} key={p.Id} />)
       }
       setPropMarkers(propertyMarkers);

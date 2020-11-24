@@ -23,12 +23,20 @@ export default function Property() {
 
     const [propriedades, setPropriedades] = useState([]);
     const getPropertyList = () => {
-        PropertyService.list().then(r => {setPropriedades(r.data)});
+        PropertyService.list().then(r => {
+            setPropriedades(r.data.map(p => (
+                <PropertyCard
+                    Property={p}
+                    key={p.Id}
+                    onEdit={() => { openModal(p) }}
+                    onDelete={async () => { await deletePropHandler(p.Id) }} />
+            )))
+        });
     }
 
     useEffect(() => {
         getPropertyList();
-    }, []);
+    });
 
     return (
         <div style={{ width: '100vw', overflowY: 'scroll' }}>
@@ -38,13 +46,7 @@ export default function Property() {
             </div>
             {
                 propriedades.length > 0 ?
-                    propriedades.map(p => (
-                        <PropertyCard
-                            Property={p}
-                            key={p.Id}
-                            onEdit={() => { openModal(p) }}
-                            onDelete={() => { deletePropHandler(p.Id) }} />
-                    ))
+                    propriedades
                     :
                     <div>
                         <h3 style={{ textAlign: 'center' }}>Sem Propriedades!</h3>
