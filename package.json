@@ -21,7 +21,6 @@
     "nodemailer": "^6.4.16",
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
-    "react-bootstrap-maskedinput": "^0.5.0",
     "react-dom": "^16.13.1",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
@@ -30,9 +29,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "prd":"npm start production",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"

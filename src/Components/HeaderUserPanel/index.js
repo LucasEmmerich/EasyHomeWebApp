@@ -2,21 +2,20 @@ import React from 'react';
 import { FaPowerOff, FaList, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import { Image, Nav, Navbar } from 'react-bootstrap';
 import NoUserImage from '../../assets/imgs/NoUserImage.jpg';
-const config = require('../../../package.json').config;
+import UserHelper from '../../Helpers/UserHelper';
+import { config } from '../../../package.json';
 
 export default function HeaderUserPanel() {
-    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const session = UserHelper.getSession();
 
-    const userImage = user?.userInformation?.ProfileImageUrl ? config.dsvApiAddress + user?.userInformation?.ProfileImageUrl : NoUserImage;
-
-    if (user) {
+    if (session) {
         return (
             <Navbar style={{ height: '8vh', width: '100%', backgroundColor: '#292b2c' }}>
                 <Navbar.Brand href="/" style={{ color: 'white' }} >EasyHome</Navbar.Brand>
                 <Nav className="mr-auto" href="/tutorial" style={{ color: 'white' }} > Tutorial </Nav>
                 <Nav>
-                    <Image className="mb-1" alt={user.userInformation.FirstName} roundedCircle src={userImage} style={{ width: '30px', height: '30px', marginTop: '5px' }} />
-                    <Nav.Link href="/account" style={{ color: 'white' }} ><span className="hideOnMobile">{user.userInformation.FirstName}</span></Nav.Link>
+                    <Image className="mb-1" alt={session.user.FirstName} roundedCircle src={session.user.ImageUrl} style={{ width: '30px', height: '30px', marginTop: '5px' }} />
+                    <Nav.Link href="/account" style={{ color: 'white' }} ><span className="hideOnMobile">{session.user.FirstName}</span></Nav.Link>
                     <Nav.Link href="/property"><FaList color='lightblue' /></Nav.Link>
                     <Nav.Link href="/logout"><FaPowerOff color='red' /></Nav.Link>
                 </Nav>

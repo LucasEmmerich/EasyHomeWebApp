@@ -11,19 +11,17 @@ export default function SignIn() {
     const [validated, setValidated] = useState(false);
 
     async function handleLoginData(event) {
+        event.preventDefault();
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+        if (form.checkValidity() === false) event.stopPropagation(); 
         else {
             const loginObj = {
-                Login,
-                Password
+                Login : Login,
+                Password : Password
             };
             const loginData = await UserService.login(loginObj);
-            if (loginData.auth) {
-                NotificationHelper.alertSuccess(`Bem Vindo!`);
+            if (loginData) {
+                NotificationHelper.alertSuccess('Bem Vindo!');
                 setTimeout(() => window.location.href = '', 1000);
             }
             else NotificationHelper.alertError(loginData.motivo);

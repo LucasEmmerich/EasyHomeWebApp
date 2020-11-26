@@ -1,16 +1,16 @@
-import tokenHelper from '../Helpers/TokenHelper';
-import api from '../api';
+import UserHelper from '../Helpers/UserHelper';
+import Api from '../api';
 
 const ChatService = {
     addChat: async (chat) => {
-        await api.post('/chat',chat, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() } });
+        await Api.instance.post('/chat', chat, { headers: { authorization: UserHelper.getSession().token } });
     },
-    getChatsFromCurrentUser: async ()=> {
-        const response = await api.get('/chat', { headers: { authorization: tokenHelper.getTokenFromCurrentUser() } });
+    getChatsFromCurrentUser: async () => {
+        const response = await Api.instance.get('/chat', { headers: { authorization: UserHelper.getSession().token } });
         return response;
     },
     getMessagesFromChat: async (chatId) => {
-        const response = await api.get(`/chat/${chatId}`, { headers: { authorization: tokenHelper.getTokenFromCurrentUser() } });
+        const response = await Api.instance.get(`/chat/${chatId}/messages`, { headers: { authorization: UserHelper.getSession().token } });
         return response;
     }
 }

@@ -1,115 +1,131 @@
-import React from 'react';
 import './index.css';
+import React, { Component } from 'react';
 import ChatService from '../../../Service/ChatService';
 import userHelper from '../../../Helpers/UserHelper';
-import { useState, useEffect } from 'react';
-import NoUserImage from '../../../assets/imgs/NoUserImage.jpg';
 import soundfile from '../../../assets/sounds/chatSound.mp3';
-import { config } from '../../../../package.json';
 
-export default function UserChat(props) {
-    const curUser = userHelper.getSessionUser();
-    const chatNotificationNoise = new Audio(soundfile);
-    const playNotification = () => chatNotificationNoise.play();
-
-    const [Message, setMessage] = useState('');
-    const [Messages, setMessages] = useState([]);
-
-    const refreshMessages = async (selfSend = false) => {
-        const response = await ChatService.getMessagesFromChat(props.chatID);
-        let msgs = [];
-        response.data.forEach((x) => {
-            if (x.User_ID === curUser.userInformation.Id) {
-                msgs.push(
-                    <div className='msg right-msg' key={x.Id}>
-                        <img className="msg-img" src={curUser.userInformation.ProfileImageUrl === null
-                            ?
-                            NoUserImage 
-                            :
-                            config.dsvApiAddress + curUser.userInformation.ProfileImageUrl} alt="" />
-                        <div className="msg-bubble">
-                            <div className="msg-info">
-                                <div className="msg-info-name">{curUser.userInformation.FirstName}</div>
-                                <div className="msg-info-time">{x.created_at}</div>
-                            </div>
-                            <div className="msg-text">{x.Message}</div>
-                        </div>
-                    </div>
-                )
-            }
-            else {
-                msgs.push(
-                    <div className='msg left-msg' key={x.Id}>
-                        <img className="msg-img" src={props.chatWith.ImageUrl} alt="" />
-                        <div className="msg-bubble">
-                            <div className="msg-info">
-                                <div className="msg-info-name">{props.chatWith.Nome}</div>
-                                <div className="msg-info-time">{x.created_at}</div>
-                            </div>
-                            <div className="msg-text">{x.Message}</div>
-                        </div>
-                    </div>
-                )
-            }
-        });
-
-        if (!selfSend && (Messages.length !== 0 && msgs.length !== Messages.length)) playNotification();
-
-        setMessages(msgs);
-    };
-
-    clearInterval(window.chatJob);
-    window.chatJob = setInterval(async () => {
-        await refreshMessages();
-    }, 5000);
-
-    useEffect(() => {
-        async function load() {
-            await refreshMessages();
-            scrollToEnd();
-        }
-        load();
-        document.onkeydown = (e) => { if (e.key === 13) sendChat(); }
-        // eslint-disable-next-line
-    }, []);
-
-    const scrollToEnd = () => {
-        let chatDiv = document.querySelector(".msger-chat");
-        chatDiv.scrollTop = chatDiv.scrollHeight;
-    };
-
-    const clearMessageSent = () => {
-        let messageDiv = document.querySelector("#message-input");
-        messageDiv.value = '';
-        setMessage('');
-    }
-
-    const sendChat = async (e) => {
-        e.preventDefault();
-        if (Message) {
-            let chat = {
-                User_To_ID: props.chatWith.Id,
-                Message
-            };
-            clearMessageSent();
-            await ChatService.addChat(chat);
-            await refreshMessages(true);
-            scrollToEnd();
+export default class UserChat extends Component {
+    constructor() {
+        super();
+        this._chatAudio = new Audio(soundfile);
+        this.state = {
+            curUser: userHelper.getSession().user,
+            messages: [],
+            message: ''
         };
     }
 
-    return (
-        <section className="msger">
-            <header className="msger-header">
-                <strong>Conversa com {props.chatWith.Nome}</strong>
-            </header>
-            <main className="msger-chat">
-                {Messages}
-            </main>
-            <form className="msger-inputarea">
-                <input type="text" id="message-input" autoComplete="off" className="msger-input" placeholder="Enter your message..." onChange={e => setMessage(e.target.value)} />
-                <button type="submit" className="msger-send-btn" onClick={sendChat}>Enviar</button>
-            </form>
-        </section>
-    );
+    componentDidMount() {
+        this.refresh();
+        this.scrollToEnd();
+
+        clearInterval(window.chatJob);
+        window.chatJob = setInterval(() => {
+            this.refresh();
+        }, 5000);
+
+        window.onkeydown = (e) => { if (e.key === 13) this.send(); }
+    }
+
+    messageComponent = (props) => {
+        return <div className={"msg "+ props.pos +"-msg"} key={props.Id}>
+            <img className="msg-img" src={props.ImageUrl} alt={props.ImageUrl}/>
+            <div className="msg-bubble">
+                <div className="msg-info">
+                    <div className="msg-info-name">{props.FirstName}</div>
+                    <div className="msg-info-time">{props.created_at}</div>
+                </div>
+                <div className="msg-text">{props.Message}</div>
+            </div>
+        </div>;
+    }
+
+    playNotification = () => this._chatAudio.play();
+
+    scrollToEnd() {
+        const chatDiv = document.querySelector(".msger-chat");
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+    };
+
+    clearMessageSent() {
+        document.querySelector('#message-input').value = "";
+        this.setState({ message: '' });
+    };
+
+    send = async (e) => {
+        e.preventDefault();
+
+        if (this.state.message) {
+            const chat = {
+                User_To_ID: this.props.conversationWith.Id,
+                Message: this.state.message
+            };
+            this.clearMessageSent();
+            await ChatService.addChat(chat);
+            this.refresh(true);
+            this.scrollToEnd();
+        };
+    }
+
+    refresh(selfSend = false) {
+        ChatService.getMessagesFromChat(this.props.chatID).then(response => {
+            const msgs = [];
+            response.data.forEach((x) => {
+                if (x.User_ID === this.state.curUser.Id) {
+                    msgs.push({
+                        Id: x.Id,
+                        ImageUrl: this.state.curUser.ImageUrl,
+                        FirstName: this.state.curUser.FirstName,
+                        created_at: x.created_at,
+                        Message: x.Message,
+                        pos: 'right'
+                    });
+                }
+                else {
+                    msgs.push({
+                        Id: x.Id,
+                        ImageUrl: this.props.conversationWith.ImageUrl,
+                        FirstName: this.props.conversationWith.Name,
+                        created_at: x.created_at,
+                        Message: x.Message,
+                        pos: 'left'
+                    });
+                }
+            });
+
+            if (!selfSend && (this.state.messages.length !== 0 && msgs.length !== this.state.messages.length))
+                this.playNotification();
+
+            this.setState({ messages: msgs });
+            this.scrollToEnd();
+        })
+    }
+
+    render() {
+        const msgs = this.state.messages.map(m => this.messageComponent(m));
+        return (
+            <section className="msger">
+                <header className="msger-header">
+                    <strong>Conversa com {this.props.conversationWith.Name}</strong>
+                </header>
+                <main className="msger-chat">
+                    {msgs}
+                </main>
+                <form className="msger-inputarea">
+                    <input
+                        type="text"
+                        id="message-input"
+                        autoComplete="off"
+                        className="msger-input" placeholder="Enter your message..."
+                        onChange={e => {
+                            this.setState({
+                                message: e.target.value
+                            });
+                        }}
+                    />
+                    <button type="submit" className="msger-send-btn" onClick={this.send}>Enviar</button>
+                </form>
+            </section>
+        );
+    }
 }

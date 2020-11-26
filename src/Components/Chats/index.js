@@ -1,77 +1,77 @@
-import React, { useEffect, useState } from 'react';
 import './index.css';
+import React, { Component } from 'react';
+import UserHelper from '../../Helpers/UserHelper';
 import ChatService from '../../Service/ChatService';
 import NoUserImage from '../../assets/imgs/NoUserImage.jpg';
 import UserChat from './UserChat';
-const config = require('../../../package.json').config;
+import Api from '../../api';
 
-export default function Chats() {
-    const user = JSON.parse(localStorage.getItem('userInfo'));
-    const userImage = user?.userInformation?.ProfileImageUrl ? config.dsvApiAddress + user?.userInformation?.ProfileImageUrl : NoUserImage;
-    const [chats, setChats] = useState([]);
-    const [chat, setChat] = useState(null);
+export default class Chats extends Component {
+    constructor() {
+        super();
+        this.state = {
+            user: UserHelper.getSession().user,
+            chats: [],
+            currentChat: null
+        }
+    }
+    componentDidMount() {
+        this.loadUserConversations();
+    }
 
-    const setChatContainer = (chatID,chatWith) => {
+    setChatContainer(chatID, conversationWith) {
         clearInterval(window.chatJob);
-        setChat(<UserChat chatID={chatID} chatWith={chatWith} />)
-    }
-
-    useEffect( () => {
-        async function load() {
-            await getChatsFromCurrentUser();
-        };
-        load();
-        // eslint-disable-next-line
-    }, []);
-
-    const getChatsFromCurrentUser = async () => {
-        const response = await ChatService.getChatsFromCurrentUser();
-        let CHATS = [];
-        response.data.forEach(x => {
-            let chatWith;
-            if (user.userInformation.Id === x.OriginUserId) {
-                chatWith = {
-                    Id: x.DestinationUserId,
-                    Nome: x.DestinationUserName,
-                    ImageUrl: x.DestinationUserImageUrl ? config.dsvApiAddress + x.DestinationUserImageUrl : NoUserImage
-                }
-                CHATS.push(
-                    <button className="chat-badge" onClick={() => setChatContainer(x.Id,chatWith) } key={x.Id}>
-                        <img className="user-icon" src={x.DestinationUserImageUrl ? config.dsvApiAddress + x.DestinationUserImageUrl : NoUserImage} alt="" />
-                        <span className="user-name">{x.DestinationUserName}</span>
-                    </button>
-                )
-            }
-            else {
-                chatWith = {
-                    Id: x.OriginUserId,
-                    Nome: x.OriginUserName,
-                    ImageUrl: x.OriginUserImageUrl ? config.dsvApiAddress + x.OriginUserImageUrl : NoUserImage
-                }
-                CHATS.push(
-                    <button className="chat-badge" onClick={() => setChatContainer(x.Id,chatWith) } key={x.Id}>
-                        <img className="user-icon" src={x.OriginUserImageUrl ? config.dsvApiAddress + x.OriginUserImageUrl : NoUserImage} alt="" />
-                        <span className="user-name">{x.OriginUserName}</span>
-                    </button>
-                )
-            }
+        this.setState({
+            currentChat: <UserChat chatID={chatID} conversationWith={conversationWith} />
         });
-
-        setChats(CHATS);
     }
 
-    return (
-        <div className="chatPanel">
-            <div className="leftSideBar">
-                <div className="cur-user">
-                    <img className="user-icon" src={userImage} alt="" />
-                    <span className="user-name">{user.userInformation.FirstName}</span>
+    loadUserConversations() {
+        ChatService.getChatsFromCurrentUser().then(response => {
+            const CHATS = [];
+            response.data.forEach(x => {
+                if (this.state.user.Id === x.OriginUserId)
+                    CHATS.push({
+                        Id: x.Id,
+                        conversationWith: {
+                            Id: x.DestinationUserId,
+                            Name: x.DestinationUserName,
+                            ImageUrl: x.DestinationUserImageUrl ? Api.baseURL + x.DestinationUserImageUrl : NoUserImage
+                        }
+                    })
+                else
+                    CHATS.push({
+                        Id: x.Id,
+                        conversationWith: {
+                            Id: x.OriginUserId,
+                            Name: x.OriginUserName,
+                            ImageUrl: x.OriginUserImageUrl ? Api.baseURL + x.OriginUserImageUrl : NoUserImage
+                        }
+                    })
+            });
+            this.setState({ chats: CHATS });
+        });
+    }
+
+    render() {
+        return (
+            <div className="chatPanel">
+                <div className="leftSideBar">
+                    <div className="cur-user">
+                        <img className="user-icon" src={this.state.user.ImageUrl} alt="" />
+                        <span className="user-name">{this.state.user.FirstName}</span>
+                    </div>
+                    {this.state.chats.map(c =>
+                        <div className="chat-badge" onClick={() => this.setChatContainer(c.Id, c.conversationWith)} key={c.Id}>
+                            <img className="user-icon" src={c.conversationWith.ImageUrl} alt="" />
+                            <span className="user-name">{c.conversationWith.Name}</span>
+                        </div>
+                    )}
                 </div>
-                {chats}
+                <div className="chat">
+                    {this.state.currentChat}
+                </div>
             </div>
-            <div className="chat">
-                {chat}
-            </div>
-        </div>
-    );
+        );
+    }
 }

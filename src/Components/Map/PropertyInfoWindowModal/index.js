@@ -4,9 +4,9 @@ import { Card, Button, Modal, Row, Col } from 'react-bootstrap';
 import ChatService from '../../../Service/ChatService';
 
 export default function PropertyInfoWindowModal(props) {
-
   const [Message, setMessage] = useState('');
-  const propertyOwnerId = props.Property.User_ID;
+  
+  const propertyOwnerId = props.Property.UserID;
 
   const sendChat = async () => {
     let chat = {

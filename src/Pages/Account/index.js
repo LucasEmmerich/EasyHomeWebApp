@@ -6,7 +6,7 @@ import PanelSideBar from '../../Components/PanelSideBar';
 import UserHelper from '../../Helpers/UserHelper';
 
 export default function Chat() {
-    const user = UserHelper.getSessionUser();
+    const user = UserHelper.getSession();
 
     if (user) {
         return (

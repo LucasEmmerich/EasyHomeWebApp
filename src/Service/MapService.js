@@ -1,9 +1,9 @@
-import api from '../api';
+import Api from '../api';
 const config = require('../../package.json').config;
 
 const MapService = {
     getMapData: async (filters) => {
-        return api.get(`/property?Types=${filters.Types.join(',')}&SaleTypes=${filters.SaleTypes.join(',')}`);
+        return Api.instance.get(`/property?Types=${filters.Types.join(',')}&SaleTypes=${filters.SaleTypes.join(',')}`);
     },
     searchAddressOnMaps: async (searchText)=>{
         let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(searchText.replace(" ", "+"))}&key=${config.googleMapsApiKey}`);

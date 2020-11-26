@@ -1,8 +1,12 @@
 import axios from 'axios';
-const config = require('../package.json').config;
+import { config } from '../package.json';
 
-const api = axios.create({
-    baseURL : config.dsvApiAddress
-});
+export default class Api{
+    static get baseURL(){
+        return process.env.NODE_ENV == 'production' ? config.prdApiAddress : config.dsvApiAddress;
+    }
+    static get instance(){
+        return (this._api ? this._api : this._api = axios.create({ baseURL : this.baseURL }))
+    }
+}
 
-export default api;

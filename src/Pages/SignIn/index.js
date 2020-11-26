@@ -5,7 +5,7 @@ import SignInComponent from '../../Components/SignIn';
 import UserHelper from '../../Helpers/UserHelper';
 
 export default function SignIn() {
-    const user = UserHelper.getSessionUser();
+    const user = UserHelper.getSession();
 
     if (user) window.location.href = "/"; 
     else {

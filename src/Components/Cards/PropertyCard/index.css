@@ -1,4 +1,4 @@
-.cardHover:hover{
+.cardHover :hover{
     background-color: lightgrey;
-    transition: background-color 1000ms ease;
+    transition: background-color 200ms ease;
 }

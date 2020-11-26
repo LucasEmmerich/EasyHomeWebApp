@@ -5,7 +5,7 @@ import Footer from '../../Components/Footer';
 import UserHelper from '../../Helpers/UserHelper';
 
 export default function Register() {
-    const user = UserHelper.getSessionUser();
+    const user = UserHelper.getSession();
 
     if (user) window.location.href = "/"; 
     else {
